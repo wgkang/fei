@@ -34,14 +34,14 @@ layui.use('table', function() {
         cols: [
             [
                 { field: 'id', width: 80, title: '序号', sort: true},
-                { field: 'number', title: '微信号'},
+                { field: 'number', title: '微信号', sort: true},
                 { field: 'remark', title: '备注'},
-                { field: 'online_time', title: '最近上线时间' },
-                { field: 'offline_time', title: '最近下线时间' },
-                { field: 'visits1', title: '区域1访问次数' },
-                { field: 'visits2', title: '区域2访问次数' },
-                { field: 'visits3', title: '区域3访问次数' },
-                { field: 'status', align: 'center', width: 120, title: '状态', templet: '#switchTpl', unresize: true },
+                { field: 'online_time', title: '最近上线', sort: true },
+                { field: 'offline_time', title: '最近下线', sort: true },
+                { field: 'visits1', title: '1区复制次数', sort: true },
+                { field: 'visits2', title: '2区复制次数', sort: true },
+                { field: 'visits3', title: '3区复制次数', sort: true },
+                { field: 'status', align: 'center', width: 100, title: '状态', templet: '#switchTpl', unresize: true, sort: true },
                 { fixed: 'right', title: '操作', toolbar: '#barTool' }
             ]
         ],

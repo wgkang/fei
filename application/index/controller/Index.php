@@ -13,7 +13,7 @@ class Index extends Controller
 
     public function visits(){
         $data = $this->request->param();
-        $data['created_time'] = date('Y-m-d H:i:s', time());
+        $data['created_time'] = date('Y-m-d', time());
         Visits::create($data);
 
         return json(['code' => 0, 'success' => true]);

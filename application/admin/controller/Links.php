@@ -10,6 +10,8 @@ namespace app\admin\controller;
 
 use app\admin\model\Links as LinksModel;
 use app\admin\model\AdminUser;
+use app\admin\model\Wechat;
+use app\index\model\Visits;
 use app\admin\service\User;
 use app\common\controller\Adminbase;
 
@@ -27,6 +29,13 @@ class Links extends Adminbase {
         $userInfo = User::instance()->getInfo();
         if ($this->request->isAjax()) {
             $result = LinksModel::order(array('id' => 'DESC'))->where(['user' => $userInfo['id']])->select()->toArray();
+            foreach ($result as &$link){
+                $link['visits'] = 0;
+                $wechat = Wechat::where(['link_id' => $link['id']])->select()->toArray();
+                foreach ($wechat as $item){
+                    $link['visits'] += Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time())])->count();
+                }
+            }
             $total = count($result);
             $result = array("code" => 0, "count" => $total, "data" => $result);
             return json($result);

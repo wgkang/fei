@@ -85,7 +85,7 @@ iframe {position: absolute; height: 100%; width: 100%; border: none; }
   .layui-body,.layui-layout-admin .layui-footer{ left:-2px; }
 }
 @media screen and (max-width: 720px){
-  	.hideMenu {display: none !important; }
+  	/*.hideMenu {display: none !important; }*/
 	.mobileTopLevelMenus{ padding:0;}
 	.winner-hide {display: none !important; }
 }

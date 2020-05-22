@@ -10,7 +10,7 @@ namespace app\admin\controller;
 
 use app\admin\model\Wechat as WeChatModel;
 use app\admin\model\Links as LinksModel;
-use app\admin\model\AdminUser;
+use app\index\model\Visits;
 use app\admin\service\User;
 use app\common\controller\Adminbase;
 
@@ -29,10 +29,14 @@ class Wechat extends Adminbase {
         $linkId = $this->request->param('linkId/d', '');
         if ($this->request->isAjax()) {
             if (!LinksModel::where(["id" => $linkId, 'user' => $userInfo['id']])->find()){
-                print_r(LinksModel::where(["id" => $linkId, 'user' => $userInfo['id']])->find());
                 $result = [$linkId,$userInfo['id']];
             }else{
                 $result = WeChatModel::order(array('id' => 'DESC'))->where([ 'link_id' => $linkId])->select()->toArray();
+                foreach ($result as &$item){
+                    $item['visits1'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '1'])->count();
+                    $item['visits2'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '2'])->count();
+                    $item['visits3'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '3'])->count();
+                }
             }
             $total = count($result);
             $result = array("code" => 0, "count" => $total, "data" => $result);
@@ -53,8 +57,12 @@ class Wechat extends Adminbase {
      */
     public function add()
     {
+        $userInfo = User::instance()->getInfo();
         if ($this->request->isPost()) {
             $data = $this->request->param();
+            if (!LinksModel::where(["id" => $data['link_id'], 'user' => $userInfo['id']])->find()){
+                $this->error('添加失败。');
+            }
             $wechat = explode(',', $data['number']);
 
             if ($data['status'] === '1'){
@@ -78,7 +86,6 @@ class Wechat extends Adminbase {
             }
         } else {
             $linkId = $this->request->param('linkId/d', '');
-            $this->assign("userList", AdminUser::order(['id' => 'DESC'])->select()->toArray());
             $this->assign("linkId", $linkId);
             return $this->fetch();
         }
@@ -93,9 +100,13 @@ class Wechat extends Adminbase {
      */
     public function edit()
     {
+        $userInfo = User::instance()->getInfo();
+
         if ($this->request->isPost()) {
             $data = $this->request->param();
-
+            if (!LinksModel::where(["id" => $data['link_id'], 'user' => $userInfo['id']])->find()){
+                $this->error('编辑失败。');
+            }
             if (WeChatModel::update($data)) {
                 $this->success("编辑成功！", url("index?linkId={$data['link_id']}"));
             } else {
@@ -114,9 +125,15 @@ class Wechat extends Adminbase {
      */
     public function delete()
     {
+        $userInfo = User::instance()->getInfo();
         $id = $this->request->param('id/d');
         if (empty($id)) {
             $this->error('ID错误');
+        }
+        $wechat = WeChatModel::where(["id" => $id])->find()->toArray();
+        if (!LinksModel::where(["id" => $wechat['link_id'], 'user' => $userInfo['id']])->find()){
+            $this->error('编辑失败。');
+            return;
         }
         if (WeChatModel::destroy($id) !== false) {
             $this->success("删除成功！");
@@ -126,7 +143,6 @@ class Wechat extends Adminbase {
     }
 
     // 上线下线
-
     public function setState(){
         $data = $this->request->param();
         if ($data['status'] === '1'){
