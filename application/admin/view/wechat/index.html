@@ -1,26 +1,22 @@
 {extend name="index_layout"/}
 {block name="main"}
 <div class="layui-card">
-    <div class="layui-card-header">链接管理</div>
+    <div class="layui-card-header">微信号管理</div>
     <div class="layui-card-body">
         <div class="layui-form">
             <table class="layui-hide" id="table" lay-filter="table"></table>
             <script type="text/html" id="toolbarDemo">
                 <div class="layui-btn-container">
-                    {if($isAdmin === true)}
-                <a class="layui-btn layui-btn-sm" href="{:url('add')}">添加链接</a>
-                    {/if}
+                <a class="layui-btn layui-btn-sm" href="{:url('add')}?linkId={$linkId}">添加微信号</a>
               </div>
             </script>
 
             <script type="text/html" id="barTool">
-                <a href='{:url("/admin/wechat/index")}?linkId={{ d.id }}' class="layui-btn layui-btn-xs">设置微信号</a>
-                {if($isAdmin === true)}
                 <a href='{:url("edit")}?id={{ d.id }}' class="layui-btn layui-btn-xs">编辑</a>
                 <a href='{:url("delete")}?id={{ d.id }}' class="layui-btn layui-btn-danger layui-btn-xs layui-tr-del">删除</a>
-                {else /}
-                <a href='{:url("edit")}?id={{ d.id }}' class="layui-btn layui-btn-xs">修改备注</a>
-                {/if}
+            </script>
+            <script type="text/html" id="switchTpl">
+                <input type="checkbox" name="status" data-href="{:url('setstate')}?id={{d.id}}" value="{{d.id}}" lay-skin="switch" lay-text="上线|下线" lay-filter="switchStatus" {{ d.status==1 ? 'checked' : '' }}>
             </script>
         </div>
     </div>
@@ -34,13 +30,18 @@ layui.use('table', function() {
     table.render({
         elem: '#table',
         toolbar: '#toolbarDemo',
-        url: '{:url("index")}',
+        url: "{:url('index')}?linkId={$linkId}",
         cols: [
             [
                 { field: 'id', width: 80, title: '序号', sort: true},
-                { field: 'link', title: '链接'},
+                { field: 'number', title: '微信号'},
                 { field: 'remark', title: '备注'},
-                { field: 'created_time', title: '添加日期' },
+                { field: 'online_time', title: '最近上线时间' },
+                { field: 'offline_time', title: '最近下线时间' },
+                { field: 'visits1', title: '区域1访问次数' },
+                { field: 'visits2', title: '区域2访问次数' },
+                { field: 'visits3', title: '区域3访问次数' },
+                { field: 'status', align: 'center', width: 120, title: '状态', templet: '#switchTpl', unresize: true },
                 { fixed: 'right', title: '操作', toolbar: '#barTool' }
             ]
         ],

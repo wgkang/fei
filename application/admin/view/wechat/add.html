@@ -1,29 +1,27 @@
 {extend name="index_layout"/}
 {block name="main"}
 <div class="layui-card">
-	<div class="layui-card-header">添加链接</div>
+	<div class="layui-card-header">添加微信号</div>
     <div class="layui-card-body">
         <form class="layui-form" method="post">
+            <input type="hidden" name="link_id" value="{$linkId}" />
             <div class="layui-form-item">
-                <label class="layui-form-label">链接</label>
+                <label class="layui-form-label">微信号</label>
                 <div class="layui-input-inline w300">
-                    <input type="text" name="link" lay-verify="required" autocomplete="off" placeholder="微信接口链接" class="layui-input">
+                    <input type="text" name="number" lay-verify="required" autocomplete="off" placeholder="微信号" class="layui-input">
                 </div>
+                <div class="layui-form-mid layui-word-aux">多个微信号用英文','隔开。例如添加2个微信号weixin1和weixin2时填写：weixin1,weixin2</div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-inline w300">
-                    <textarea  name="remark" autocomplete="off" placeholder="备注信息" class="layui-textarea"></textarea>
+                    <textarea  name="remark" lay-verify="required" autocomplete="off" placeholder="备注信息" class="layui-textarea"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">所属用户</label>
+                <label class="layui-form-label">是否上线</label>
                 <div class="layui-input-inline w300">
-                    <select name="user" lay-filter="roleid" lay-verify="required">
-                        {volist name="userList" id="user"}
-                        <option value="{$user['id']}">{$user['nickname']}</option>
-                        {/volist}
-                    </select>
+                    <input type="checkbox" name="status" lay-skin="switch" lay-text="是|否" value="1" checked="">
                 </div>
             </div>
             <div class="layui-form-item">
