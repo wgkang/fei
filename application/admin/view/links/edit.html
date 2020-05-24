@@ -7,12 +7,6 @@
             <input type="hidden" name="id" value="{$data.id}" />
             {if($isAdmin === true)}
             <div class="layui-form-item">
-                <label class="layui-form-label">链接</label>
-                <div class="layui-input-inline w300">
-                    <input type="text" name="link" lay-verify="required" autocomplete="off" placeholder="微信链接" class="layui-input" value="{$data.link}">
-                </div>
-            </div>
-            <div class="layui-form-item">
                 <label class="layui-form-label">所属人</label>
                 <div class="layui-input-inline">
                     <select name="user" lay-filter="user" lay-verify="required">

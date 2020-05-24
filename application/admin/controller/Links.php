@@ -33,8 +33,9 @@ class Links extends Adminbase {
                 $link['visits'] = 0;
                 $wechat = Wechat::where(['link_id' => $link['id']])->select()->toArray();
                 foreach ($wechat as $item){
-                    $link['visits'] += Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time())])->count();
+                    $link['visits'] += Visits::where(['wechat' => $item['number'], 'created_time' => date('Y-m-d', time())])->count();
                 }
+                $link['link'] = url("index/index/getwx", "id={$link['id']}", '', true);
             }
             $total = count($result);
             $result = array("code" => 0, "count" => $total, "data" => $result);

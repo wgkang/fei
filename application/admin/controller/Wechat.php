@@ -33,9 +33,9 @@ class Wechat extends Adminbase {
             }else{
                 $result = WeChatModel::order(array('id' => 'DESC'))->where([ 'link_id' => $linkId])->select()->toArray();
                 foreach ($result as &$item){
-                    $item['visits1'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '1'])->count();
-                    $item['visits2'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '2'])->count();
-                    $item['visits3'] = Visits::where(['wechat_id' => $item['id'], 'created_time' => date('Y-m-d', time()), 'region' => '3'])->count();
+                    $item['visits1'] = Visits::where(['wechat' => $item['number'], 'created_time' => date('Y-m-d', time()), 'region' => '1'])->count();
+                    $item['visits2'] = Visits::where(['wechat' => $item['number'], 'created_time' => date('Y-m-d', time()), 'region' => '2'])->count();
+                    $item['visits3'] = Visits::where(['wechat' => $item['number'], 'created_time' => date('Y-m-d', time()), 'region' => '3'])->count();
                 }
             }
             $total = count($result);

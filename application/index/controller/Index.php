@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 use app\index\model\Visits;
+use app\admin\model\Wechat;
 
 class Index extends Controller
 {
@@ -17,5 +18,17 @@ class Index extends Controller
         Visits::create($data);
 
         return json(['code' => 0, 'success' => true]);
+    }
+
+    public function getwx() {
+        $linkId = $this->request->param('id/d', '');
+        $result = Wechat::order(array('id' => 'DESC'))->where([ 'link_id' => $linkId])->select()->toArray();
+        $count = count($result);
+        if ($count === 0){
+            return "var stxlwx='';";
+        }
+        $wechat = $result[mt_rand(0, count($result) - 1)];
+
+        return  "var stxlwx='{$wechat['number']}';";
     }
 }

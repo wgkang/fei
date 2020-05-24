@@ -2,6 +2,7 @@
 {block name="main"}
 <div class="layui-card">
     <div class="layui-card-header">微信号管理</div>
+    <div class="layui-word-aux">复制统计地址：{:url('/index/index/visits', '', '', true)}<br>参数一：wechat - 统计的微信号；参数二：region - 微信号在页面中的区域。<br>例如微信号88888放在页面1区域，该微信被复制时发送请求到{:url('/index/index/visits', 'wechat=88888&region=1', '', true)}</div>
     <div class="layui-card-body">
         <div class="layui-form">
             <table class="layui-hide" id="table" lay-filter="table"></table>
@@ -9,6 +10,7 @@
                 <div class="layui-btn-container">
                 <a class="layui-btn layui-btn-sm" href="{:url('add')}?linkId={$linkId}">添加微信号</a>
               </div>
+
             </script>
 
             <script type="text/html" id="barTool">
